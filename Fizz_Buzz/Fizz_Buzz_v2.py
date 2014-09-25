@@ -22,7 +22,8 @@ if len(sys.argv) == 2:
     fizz_buzz(int(sys.argv[1]))
 
 elif len(sys.argv) == 1:
-    number = raw_input("Please enter a number")
+    number = raw_input("Please enter a number: ")
+    print "Fizz buss counting up to " + str(number)
     #if type(int(number))!= int:
         #number = raw_input("Please enter a NUMBER")
     fizz_buzz(int(number))
