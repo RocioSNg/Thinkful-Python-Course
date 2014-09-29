@@ -24,13 +24,16 @@ def fizz_buzz(n):
 
 #--If user provides an input when running the program--#
 if len(sys.argv) == 2:
-    while True:
-        try:
-            number = int(sys.argv[1])
-            break
-        except ValueError:
+    try:
+        number = int(sys.argv[1])
+    except ValueError:
+        while True:
+            try:
                 number = raw_input("Please enter an integer : ")
                 number = int(number)
+                break
+            except ValueError:
+                print("Try Again")
     print "Fizz buzz counting up to " + str(number)
     fizz_buzz(number)
 
