@@ -8,7 +8,8 @@ import sys
 #----Define Fizz Buzz function-----#
 
 def fizz_buzz(n):
-    '''Counts up to the number n.  Prints fizz if current number is divisible by 3,
+    '''
+    Counts up to the number n.  Prints fizz if current number is divisible by 3,
     fuzz if divisble by 5 and fizz buzz if divisble by both.  Otherwise it prints
     the number
     '''
@@ -24,9 +25,10 @@ def fizz_buzz(n):
 
 #--If user provides an input when running the program--#
 if len(sys.argv) == 2:
+    #--Add exceptions--#
     try:
         number = int(sys.argv[1])
-    except ValueError:
+    except ValueError:  #if non-integer is entered
         while True:
             try:
                 number = raw_input("Please enter an integer : ")
@@ -34,7 +36,7 @@ if len(sys.argv) == 2:
                 break
             except ValueError:
                 print("Try Again")
-    print "Fizz buzz counting up to " + str(number)
+            print "Fizz buzz counting up to " + str(number)
     fizz_buzz(number)
 
 #----If user does not provide input----#
@@ -47,5 +49,6 @@ elif len(sys.argv) == 1:
             break
         except ValueError:
             print ("I said enter an INTEGER...try again: ")
-    print "Fizz buss counting up to " + str(number)
+
+    print "Fizz buzz counting up to " + str(number)
     fizz_buzz(number)
