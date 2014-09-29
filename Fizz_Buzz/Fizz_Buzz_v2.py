@@ -5,25 +5,44 @@
 
 import sys
 
-#define Fizz Buzz function
+#----Define Fizz Buzz function-----#
+
 def fizz_buzz(n):
+    '''Counts up to the number n.  Prints fizz if current number is divisible by 3,
+    fuzz if divisble by 5 and fizz buzz if divisble by both.  Otherwise it prints
+    the number
+    '''
     for num in range(1, n+1):
-        if num % 3 == 0 and num % 5 == 0:
+        if num % 3 == 0 and num % 5 == 0:   #divisible by 3 and 5
             print "fizz buzz"
-        elif num % 3 == 0:
+        elif num % 3 == 0:  #divisible by 3 only
             print "fizz"
-        elif num % 5 == 0:
+        elif num % 5 == 0:  #divisible by 5 only
             print "buzz"
         else:
             print num
 
+#--If user provides an input when running the program--#
 if len(sys.argv) == 2:
-    print "Fizz buzz counting up to {}" .format(sys.argv[1])
-    fizz_buzz(int(sys.argv[1]))
+    while True:
+        try:
+            number = int(sys.argv[1])
+            break
+        except ValueError:
+                number = raw_input("Please enter an integer : ")
+                number = int(number)
+    print "Fizz buzz counting up to " + str(number)
+    fizz_buzz(number)
 
+#----If user does not provide input----#
 elif len(sys.argv) == 1:
-    number = raw_input("Please enter a number: ")
+    while True:
+        #--Add Exception---#
+        try:
+            number = raw_input("Please enter an integer : ")
+            number = int(number)
+            break
+        except ValueError:
+            print ("I said enter an INTEGER...try again: ")
     print "Fizz buss counting up to " + str(number)
-    #if type(int(number))!= int:
-        #number = raw_input("Please enter a NUMBER")
-    fizz_buzz(int(number))
+    fizz_buzz(number)
