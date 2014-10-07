@@ -13,7 +13,7 @@ def main():
     while True:
         if raw_input("Would you like another drink?").lower in ('y','yes'):
             pirate_drink()
-        elif:
+        else:
             break
 
 #----Dictionaries-----#
