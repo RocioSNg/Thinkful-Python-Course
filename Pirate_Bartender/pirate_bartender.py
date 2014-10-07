@@ -7,11 +7,13 @@
 #-------------------------------------------------------------------------------
 
 import random
+
 def main():
     pirate_questions()
     pirate_drink()
     while True:
-        if raw_input("Would you like another drink?").lower in ('y','yes'):
+        if raw_input("Would you like to order another drink?") in ('y','yes'):
+            pirate_questions()
             pirate_drink()
         else:
             break
@@ -40,7 +42,7 @@ def pirate_questions():
     ''' Asks question corresponding to each drink type(key) in the questions dictionary
         and gather repsonses in the answers dictionary '''
     for key in questions:
-        if raw_input(questions[key]) in ('y','Y','Yes', 'yes'):
+        if raw_input(questions[key]) in ('y','yes'):
             answers[key] = True
     #print answers
     return answers
@@ -53,6 +55,8 @@ def pirate_drink():
         if answers[key] == True:
             arr_drink += [random.choice(ingredients[key])]
     print arr_drink
+    #if len(arr_drink) == 0:
+       # print "I can't make ye a drink without no ingredients!"
     return arr_drink
 
 if __name__ == '__main__':
