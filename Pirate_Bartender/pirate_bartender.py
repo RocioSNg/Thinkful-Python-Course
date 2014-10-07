@@ -6,7 +6,12 @@
 # Created:     07/10/2014
 #-------------------------------------------------------------------------------
 
-#----Questions dictionary-----#
+import random
+def main():
+    pirate_questions()
+    pirate_drink()
+
+#----Dictionaries-----#
 
 questions = {
     "strong": "Do ye like yer drinks strong?",
@@ -16,13 +21,34 @@ questions = {
     "fruity": "Are ye one for a fruity finish?"
             }
 
+ingredients = {
+    "strong": ["glug of rum", "slug of whisky", "splash of gin"],
+    "salty": ["olive on a stick", "salt-dusted rim", "rasher of bacon"],
+    "bitter": ["shake of bitters", "splash of tonic", "twist of lemon peel"],
+    "sweet": ["sugar cube", "spoonful of honey", "spash of cola"],
+    "fruity": ["slice of orange", "dash of cassis", "cherry on top"]
+}
+
 answers = {"strong": False, "salty": False, "bitter": False, "sweet":False, "fruity" : False}
 
 def pirate_questions():
+    ''' Asks question corresponding to each drink type(key) in the questions dictionary
+        and gather repsonses in the answers dictionary '''
     for key in questions:
         if raw_input(questions[key]) in ('y','Y','Yes', 'yes'):
             answers[key] = True
     print answers
+    return answers
+
+def pirate_drink():
+    '''If answers to any drink attribtues are true in the answers list, it will
+    choose an ingredient from the ingredients dictionary and add it to the drink'''
+    arr_drink = []
+    for key in answers:
+        if answers[key] == True:
+            arr_drink += [random.choice(ingredients[key])]
+    print arr_drink
+    return arr_drink
 
 if __name__ == '__main__':
-    pirate_questions()
+   main()
