@@ -40,7 +40,7 @@ if len(sys.argv) == 2:
     fizz_buzz(number)
 
 #----If user does not provide input----#
-elif len(sys.argv) == 1:
+elif len(sys.argv) == 1:  ## use else to not allow for more conditions
     while True:
         #--Add Exception---#
         try:
