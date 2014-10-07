@@ -12,7 +12,7 @@ def main():
     pirate_questions()
     pirate_drink()
     while True:
-        if raw_input("Would you like to order another drink?") in ('y','yes'):
+        if raw_input("Would you like to order another drink?").lower() in ('y','yes'):
             pirate_questions()
             pirate_drink()
         else:
@@ -42,7 +42,7 @@ def pirate_questions():
     ''' Asks question corresponding to each drink type(key) in the questions dictionary
         and gather repsonses in the answers dictionary '''
     for key in questions:
-        if raw_input(questions[key]) in ('y','yes'):
+        if raw_input(questions[key]).lower() in ('y','yes'):
             answers[key] = True
     #print answers
     return answers
