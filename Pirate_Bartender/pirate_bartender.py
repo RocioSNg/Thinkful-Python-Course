@@ -10,6 +10,11 @@ import random
 def main():
     pirate_questions()
     pirate_drink()
+    while True:
+        if raw_input("Would you like another drink?").lower in ('y','yes'):
+            pirate_drink()
+        elif:
+            break
 
 #----Dictionaries-----#
 
@@ -37,11 +42,11 @@ def pirate_questions():
     for key in questions:
         if raw_input(questions[key]) in ('y','Y','Yes', 'yes'):
             answers[key] = True
-    print answers
+    #print answers
     return answers
 
 def pirate_drink():
-    '''If answers to any drink attribtues are true in the answers list, it will
+    '''If answers to any drink attributes are true in the answers list, it will
     choose an ingredient from the ingredients dictionary and add it to the drink'''
     arr_drink = []
     for key in answers:
