@@ -12,9 +12,10 @@ def main():
     print "Ahoy matey! Let me make the perfect drink for ye!!!"
     pirate_questions()
     glass = pirate_drink()
-    print "I will make your drink with: "
-    for ingredient in glass:
-        print ingredient
+    if len (glass) > 1:
+        print "I will make your drink with: "
+        for ingredient in glass:
+            print ingredient
     while True:
         if raw_input("Would you like to order another drink? ").lower() in ('y','yes'):
             pirate_questions()
