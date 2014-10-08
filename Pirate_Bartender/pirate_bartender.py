@@ -18,7 +18,10 @@ def main():
     while True:
         if raw_input("Would you like to order another drink? ").lower() in ('y','yes'):
             pirate_questions()
-            pirate_drink()
+            glass = pirate_drink()
+            print "I will make your drink with: "
+            for ingredient in glass:
+                print ingredient
         else:
             break
 
