@@ -19,16 +19,17 @@ class Bike_Shop(object):
     def __init__(self, name, inventory):
         self.name = name
         self.inventory = inventory    #dictionary of models of bikes and their inventory numbers
+        self.bikes = bike_list(self, inventory)
 
-    def bike_list(inventory):
-        bike_list = []
+    def bike_list(self,inventory):
+        bikes = []
         for key in inventory:
             #item = "Schwinn"
             bike = Bicycle(key, bike_catalog[key][0],bike_catalog[key][1])  #grabs the info from the bike catalog to make instances of each bike
             bike_list.append(bike)   #adds each bike to the inventory
-        #return bike_list
+        return bikes
         #return inventory ## not necessary
-        self.bike_list = bike_list
+        #self.bike_list = bike_list
 
     def bike_sell_price (self,bike_list):
         '''determines selling price for each bike
