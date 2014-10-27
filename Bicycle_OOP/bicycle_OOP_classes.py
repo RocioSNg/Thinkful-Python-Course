@@ -59,7 +59,8 @@ print Bike_Shop1.bike_list
 
 
 print "Welcome to the bicycle shop called: %s" % Bike_Shop1.name
-
+for key in Bike_Shop1.inventory:
+    print "We currently have %s of the %s bike model" % ( Bike_Shop1.inventory[key], key)
 
 
 #------Customers-----#
@@ -80,9 +81,9 @@ for cust in customers:
     for bike in afforable_bikes:
         print bike
 
-print "The %  store has the following left in stock:" % Bike_Shop1.name
-for bike in bike_shop1_inventory:
-    print " %s of the %s model left" % ( bike_shop1_inventory[bike], bike)
+#print "The %  store has the following left in stock:" % Bike_Shop1.name
+#for bike in bike_shop1_inventory:
+   # print " %s of the %s model left" % ( bike_shop1_inventory[bike], bike)
 
 
 
