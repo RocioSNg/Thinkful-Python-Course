@@ -19,14 +19,14 @@ class Bike_Shop(object):
     def __init__(self, name, inventory):
         self.name = name
         self.inventory = inventory    #dictionary of models of bikes and their inventory numbers
-        self.bikes = bike_list(self, inventory)
+        self.bikes = self.bike_list
 
     def bike_list(self,inventory):
         bikes = []
         for key in inventory:
             #item = "Schwinn"
             bike = Bicycle(key, bike_catalog[key][0],bike_catalog[key][1])  #grabs the info from the bike catalog to make instances of each bike
-            bike_list.append(bike)   #adds each bike to the inventory
+            bikes.append(bike)   #adds each bike to the inventory
         return bikes
         #return inventory ## not necessary
         #self.bike_list = bike_list
@@ -55,7 +55,7 @@ Bike_Shop1 = Bike_Shop("On Two Wheels", bike_shop1_inventory)
 #inventory = Bike_Shop1.bike_inventory(bike_shop1_models)
 #for bike in inventory:
  #   print bike.model_name
-print Bike_Shop1.bike_list
+print Bike_Shop1.bikes
 #print bike_prices
 
 
