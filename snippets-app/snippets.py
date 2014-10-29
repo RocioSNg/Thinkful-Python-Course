@@ -1,8 +1,30 @@
 import logging
 import csv
+import argparse
+import sys
 
-# Set the log output file and the log level
+
+#------------Set the log output file and the log level---------#
+
 logging.basicConfig(filename="output.log", level=logging.DEBUG)
+
+
+#-------------Functions----------------------------------------#
+
+def main():
+	'''Main function -- runs when command line interface is used'''
+	logging.info("Starting Snippets Program")
+	parser = make_parser
+	arguments = parser.parse_args(sys.argv[1:])  # passes all the command line arguments except the first which is the name of our program
+
+
+def make_parser():
+	''' Construct the command line parser'''
+	logging.info("Constructing parser")
+	description = "Store and retrieve snippets of text"  # defines purpose of the program for the user
+	parser = argparse.ArgumentParser(description = description)
+
+
 
 
 def put(name, snippet, filename):
@@ -17,3 +39,6 @@ def put(name, snippet, filename):
 		writer.writerow([name, snippet])	# adds new rows to the file
 	logging.debug("Write successful")
 	return name, snippet #returns a tuple
+
+if __name__ == "__main__":
+	main()
