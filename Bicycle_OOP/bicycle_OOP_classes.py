@@ -9,13 +9,22 @@
 import random
 
 class Bicycle(object):
-    def __init__(self, model_name, weight, production_cost):
+    def __init__(self, model_name, weight, production_cost, wheel_type, frame_type):
         self.model_name = model_name
         self.weight = weight  # in pounds
         self.production_cost = production_cost
 
-class Wheels:
-    def __init__(
+class Wheel(object):
+    def __init__(self, model_name, weight, production_cost):
+        self.model_name = model_name
+        self.weight = weight # in pounds
+        self.production_cost = production_cost
+
+class Frame(object):
+    def __init__(self, metal_type, weight, production_cost):
+        self.metal_type = metal_type
+        self.weight = weight
+        self.production_cost = production_cost
 
 
 class Bike_Shop(object):
@@ -57,9 +66,6 @@ bike_catalog = {"Schwinn":[19,100],"Trek":[18,400],"Specialized": [15,900],"Cann
 bike_shop1_inventory = {"Schwinn": 2, "Trek": 1, "Specialized":4, "Cannondale":1, "Giant":1, "Fuji": 2}
 
 bike_shop1 = Bike_Shop("On Two Wheels", bike_shop1_inventory)
-
-
-
 bike_shop = bike_shop1
 #inventory = Bike_Shop1.bike_inventory(bike_shop1_models)
 #for bike in inventory:
