@@ -16,7 +16,18 @@ def make_parser():
 	logging.info("Constructing parser")
 	description = "Store and retrieve snippets of text"  # defines purpose of the program for the user
 	parser = argparse.ArgumentParser(description = description)
+	
+	subparser = parser.add_subparsers(dest="commands" help="Available commands")
+	
+	# Subparser for the put comman
+	logging.debug("Constructing put subparser")
+	put_parser = subparser.add_parser("put", help="Store a snippet")
+	put_parser.add_argument("name", help="The name of the snippet")
+	put_parser.add_argument("snippet", help="The snippet text")
+	put_parser.add_argument("filename", default="snippets.csv", nargs="?", help="The snippet filename")	# the nargs='?' allows the argument to be left out and the default value used.
+
 	return parser
+
 def put(name, snippet, filename):
 	""" Store a snippet with an associated name in the CSV
 	"""
@@ -37,4 +48,4 @@ def main():
 	arguments = parser.parse_args(sys.argv[1:])  # passes all the command line arguments except the first which is the name of our program
 
 if __name__ == "__main__":
-	main()
+main()
