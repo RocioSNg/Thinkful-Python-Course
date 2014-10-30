@@ -19,6 +19,7 @@ def make_parser():
 	#------Subparser for the put command----------#
 	logging.debug("Constructing put subparser")
 	put_parser = subparser.add_parser("put", help="Store a snippet")
+	put_parser.add_argument("method", help="Add to add a new snippet or Update to update a current snippet")
 	put_parser.add_argument("name", help="The name of the snippet")
 	put_parser.add_argument("snippet", help="The snippet text")
 	put_parser.add_argument("filename", default="snippets.csv", nargs="?", help="The snippet file name")	# the nargs='?' allows the argument to be left out and the default value used.
@@ -36,7 +37,7 @@ def make_parser():
 	search_parser.add_argument("filename", default="snippets.csv", nargs="?", help="The file name being searched")
 	return parser
 
-def put(name, snippet, filename):
+def put(method, name, snippet, filename):	# method either is add or update
 	''' Store a snippet with an associated name in the CSV'''
 	logging.info("Writing {!r}:{!r} to {!r}".format(name, snippet, filename))
     
@@ -44,16 +45,28 @@ def put(name, snippet, filename):
     
 	with open(filename, "a") as f:	# 'a' indicates that we want to create a file if it doesn't exist, or append it otherwise
 		writer = csv.writer(f)	# writer object will allow for new rows to be added to the CSV file for each created snippet
-		logging.debug("Writing snippet to file")
-		writer.writerow([name, snippet])	# adds new rows to the file
-		logging.debug("Write successful")
+		#reader = csv.reader(f)
+		
+		if method in ["add", "Add", 'a']":
+			logging.debug("Writing snippet to file")
+			writer.writerow([name, snippet])	# adds new rows to the file
+			logging.debug("Write successful")
+			
+		#-----next code block does not wor yet------#	
+		elif method == "Update":
+			logging.debug("Updating snippet in file")
+			for row in writer:
+				if name == row[0]:
+					row[1] = snippet
+					logging.debug("Update successful")
+		
 	return name, snippet #returns a tuple
 
 def get(name, filename):
 	'''Retrieves the snippet text associated with the name'''
 	logging.info("Retrieving snippet associated with {!r}".format (name))
 	logging.debug("Opening File")
-
+	
 	with open(filename, "r") as r:
 		reader = csv.reader(r)
 		logging.debug("looking for snippet")
