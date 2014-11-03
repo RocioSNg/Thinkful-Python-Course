@@ -47,12 +47,12 @@ def put(method, name, snippet, filename):	# method either is add or update
 		writer = csv.writer(f)	# writer object will allow for new rows to be added to the CSV file for each created snippet
 		#reader = csv.reader(f)
 		
-		if method in ["add", "Add", 'a']":
+		if method in ["add", "Add", "a"]:
 			logging.debug("Writing snippet to file")
 			writer.writerow([name, snippet])	# adds new rows to the file
 			logging.debug("Write successful")
 			
-		#-----next code block does not wor yet------#	
+		#-----next code block does not work yet------#	
 		elif method == "Update":
 			logging.debug("Updating snippet in file")
 			for row in writer:
@@ -67,6 +67,7 @@ def get(name, filename):
 	logging.info("Retrieving snippet associated with {!r}".format (name))
 	logging.debug("Opening File")
 	
+	
 	with open(filename, "r") as r:
 		reader = csv.reader(r)
 		logging.debug("looking for snippet")
@@ -75,7 +76,10 @@ def get(name, filename):
 			if name == row[0]:
 				snippet = row[1]
 		logging.debug("Snippet Found")
+		
 	return name, snippet
+	#except:
+	#	print "snippet not found. Try again"
 
 
 def search(query, filename):
@@ -110,9 +114,12 @@ def main():
 		print "Stored {!r} as {!r}". format(snippet, name)
 		
 	if command == "get":
-		name, snippet = get(**arguments)
-		print "The stored snippet for {!r} is {!r}".format(name, snippet)
-	
+		try:
+			name, snippet = get(**arguments)
+			print "The stored snippet for {!r} is {!r}".format(name, snippet)
+		except:
+			print "Snippet not Found. Please try again"
+			
 	if command == "search":
 		query, results = search(**arguments)
 		if len(results) > 0:
