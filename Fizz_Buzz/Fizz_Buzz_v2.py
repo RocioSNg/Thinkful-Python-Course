@@ -10,7 +10,7 @@ import sys
 def fizz_buzz(n):
     '''
     Counts up to the number n.  Prints fizz if current number is divisible by 3,
-    fuzz if divisble by 5 and fizz buzz if divisble by both.  Otherwise it prints
+    fuzz if divisible by 5 and fizz buzz if divisible by both.  Otherwise it prints
     the number
     '''
     for num in range(1, n+1):
