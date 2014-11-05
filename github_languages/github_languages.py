@@ -28,7 +28,7 @@ def get_languages_dictionaries(repositories):
 def main():
 	'''Main function'''
 	repositories = get_repositories(sys.argv[1])
-  language_dictionaries = get_language_dictionaries(respositories)
+	language_dictionaries = get_language_dictionaries(respositories)
 	print language_dictionaries
 
 if __name__ == "__main__":
