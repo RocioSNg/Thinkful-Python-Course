@@ -21,10 +21,15 @@ def get_request_token():
 
 def authorize():
 	'''A complete OAuth authentication flow'''
-  	request_token, request_secret = get_request_token()
-  	# print request_token, request_secret
- 	verifier = get_user_authorization(request_token)
-	access_token, access_secret = get_access_token(request_token, request_secret, verifier) # calls our function passing items grabbed
+  	try:
+		access_token, access_secret = get_stored_credentials()	# checks to see if there is an existing request token
+	  	# print request_token, request_secret
+	except IOError:
+		request_token, request_secret = get_request_token()
+		verifier = get_user_authorization(request_token)
+		access_token, access_secret = get_access_token(request_token, request_secret, verifier) # calls our function passing items grabbed
+		
+		store_credentials(access_token, access_secret)
 
 	oauth = OAuth1(CLIENT_KEY, client_secret = CLIENT_SECRET,
 			resource_owner_key = access_token,
