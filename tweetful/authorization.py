@@ -6,6 +6,7 @@ from secret import CLIENT_KEY, CLIENT_SECRET
 from urls import *
 import json
 
+
 def get_request_token():
   '''Get a token allowing us to request user authorization'''
   oauth = OAuth1(CLIENT_KEY, client_secret=CLIENT_SECRET)  # creates an instance of the OAuth1 class, giving it the client key and secret
@@ -17,10 +18,9 @@ def get_request_token():
   
   return request_token, request_secret
 
-#---- Main Function-----#
+
 def authorize():
 	'''A complete OAuth authentication flow'''
-	
   	request_token, request_secret = get_request_token()
   	# print request_token, request_secret
  	verifier = get_user_authorization(request_token)
@@ -59,16 +59,16 @@ def get_access_token(request_token, request_secret, verifier):
 	access_secret = credentials.get("oauth_token_secret")[0]
 	return access_token, access_secret
 
-#--- get around having to visit the authentification URL every time we use the app
+#--- Avoid having to visit the authentification URL every time and get a token
 
 def store_credentials(access_token, access_secret):
-	''' Save our access credentials in a json file '''
+	'''Save our access credentials in a json file'''
 	with open("access.json", "w") as f:
-		json.dump({"access_token": access_token,
-				"access_secret": access_secret}, f) # writes a dictionary to the file as JSON
+		json.dump({"access_token": access_token, "access_secret": access_secret}, f)
 
 def get_stored_credentials():
-	'''Try to retrieve stored access credentials from a json file'''
-	with open("access.json", "r") as f:
+	'''Try and retrieve stored access credentials from a json file'''
+	with open ("access.json", "r") as f:
 		credentials = json.load(f)
-		return credentials["access_token"], credentials["access_secret"] # reads back from the dictionary
+		return credentials["access_token"], credentials["access_secret"]
+
