@@ -1,33 +1,49 @@
 import authorization
 import json
 import requests
-
 from urls import *
 
+import sys
+
+def make_parser():
+	description = "App that interacts with the Twitter API"
+	parser = argparse.ArgumentParser(description = description)
+
+	#---subparser for the get_followers command--#
+	
+
+
+#---Functions that make requests to the Twitter API------#
+def timeline():
+	'''
+	Gets home timeline information for the user, a collection of 
+	most recent tweets/retweets by user and users they follow
+	No parameters are required
+	'''
+	response = requests.get(TIMELINE_URL, auth = auth)	# uses OAuth1 instance that is returned to authenticate 
+	print json.dumps(response.json(), indent = 4)	# json.dumps formats the output
+
+def get_followers(name):
+	'''
+	Get folowers of a specified user
+	Screen Name needs to be provided
+	'''
+  	auth = authorization.authorize() 
+  	screen_name = {"screen_name" : name }
+ 	followers_request = requests.get(FOLLOWERS_URL, params = screen_name, auth = auth)
+ 	print json.dumps(followers_request.json(), indent = 4)
+
+def tweet(text):  
+  status = {"status" : "Hello world"}
+  post_request = requests.post(POST_REQUEST_URL, params = status, auth = auth)
+  print json.dumps(post_request.json(), indent = 4)
+  
+  
 def main():
 	'''Main function'''
 	auth = authorization.authorize()  # authorizes the application
-	
-  	#---Get Home Timeline information for user---#
-  	# Returns a collection of the most recent Tweets and retweets posted by the authenticating user and the users they follow
-    
-  	response = requests.get(TIMELINE_URL, auth = auth)	# uses OAuth1 instance that is returned to authenticate 
-	print json.dumps(response.json(), indent = 4)	# json.dumps formats the output
-  
-  	#-- Get folowers of a specified user---#
-  	#Either a screen_name or a user_id should be provided.
-  	screen_name = {"screen_name" : "RocioSNg"}
-  	followers_request = requests.get(FOLLOWERS_URL, params = screen_name, auth = auth)
-  	print json.dumps(followers_request.json(), indent = 4)
-  
-  
-  
-  	#--Post update-----#
-    	status = {"status" : "Hello world"}
-  	post_request = requests.post(POST_REQUEST_URL, params = status, auth = auth)
-    	print json.dumps(post_request.json(), indent = 4)
-  
-  	#sample post request https://api.twitter.com/1.1/statuses/update.json?status=Maybe%20he%27ll%20finally%20find%20his%20keys.%20%23peterfalk
-  
+	get_followers("RocioSNg")  	 		  
+  	  
+
 if __name__ == "__main__":
 	main()
