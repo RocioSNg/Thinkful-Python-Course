@@ -44,7 +44,7 @@ def get_followers(name):
 
 def tweet(text):  
   	'''Updates the status of the user (tweet)'''
-	status = {"status" : "Hello world"}
+	status = {"status" : text}
   	post_request = requests.post(POST_REQUEST_URL, params = status, auth = auth)
   	#print json.dumps(post_request.json(), indent = 4)
   	print "You have just sent the following tweet {!r}".format (text)
