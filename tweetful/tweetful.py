@@ -21,7 +21,8 @@ def make_parser():
 	#---subparser for the tweet command----------#
 	tweet_parser = subparser.add_parser("tweet", help="Update the status (tweet) of the authenticating user")
 	tweet_parser.add_argument("text", help="text you would like to include in the status update (tweet).  Limit of 150 words")
-
+	
+	return parser
 #---Functions that make requests to the Twitter API------#
 def timeline():
 	'''
@@ -29,6 +30,7 @@ def timeline():
 	most recent tweets/retweets by user and users they follow
 	No parameters are required
 	'''
+  	auth = authorization.authorize() 
 	response = requests.get(TIMELINE_URL, auth = auth)	# uses OAuth1 instance that is returned to authenticate 
 	return json.dumps(response.json(), indent = 4)	# json.dumps formats the output
 
@@ -44,6 +46,7 @@ def get_followers(name):
 
 def tweet(text):  
   	'''Updates the status of the user (tweet)'''
+	auth = authorization.authorize()	
 	status = {"status" : text}
   	post_request = requests.post(POST_REQUEST_URL, params = status, auth = auth)
   	#print json.dumps(post_request.json(), indent = 4)
