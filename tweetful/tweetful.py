@@ -69,6 +69,7 @@ def main():
 		followers  = get_followers(**arguments)	#unpacks key value pairs into keyword arguments
   		print followers
 		#load = json.loads(followers)
+    #print load
   	if command == "tweet":
 		tweet(**arguments)
 
