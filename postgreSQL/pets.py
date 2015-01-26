@@ -6,7 +6,7 @@ import csv
 # Connect to pets database
 
 try:
-	conn = psycopg2.connect("dbname = pets", user = "roio", host = "localhost")
+	conn = psycopg2.connect("dbname = pets", user = "rocio", host = "localhost")
 
 except:
 	print "I am unable to connect to the database"
@@ -14,51 +14,32 @@ except:
 # open cursor
 cur = conn.cursor()
 
-# test cursor
-
-cur.execute('''select * from breed''')
-
-
-# open and parse CSV file as dict to be inserted
-
-	#add_pets = csv.reader(open("pets_to_add.csv"))
-
-	#print add_pets[1]
+		# test cursor
+		# cur.execute('''select * from breed''')
 
 
-		#pets_to_add_list = ()
+# field names NEED to be changed to reflect SQL file
+field_names = ['name', 'age', 'breed_id', 'species_id', 'shelter_id', 'adopted']
 
-		#for row in add_pets:
-			#print row
-			#inner_dict = dict(zip(fieldnames, values))
-			#pets_to_add_list.append(inner_dict)	
-
-	#print pets_to_add_list
+#----------opens and parses the CSV file, creating a dictionary of items to be inserted into the database
 
 
+# open csv file and convert to dictReader object
 pet_file = open("pets_to_add.csv")
+csv_reader = csv.DictReader(pet_file, delimiter = ',', fieldnames = field_names)
 
-field_names = pet_file.readline()
-print field_names
-
-
-#print field_names
-csv_reader = csv.DictReader(pet_file, delimiter = ',' )
-
-
+# create list of dictionary items
 pets_to_add_list = []
 
-print csv_reader
 for row in csv_reader:
+	#print row
 	pets_to_add_list.append(row)
 
-pets_to_add =  tuple(pets_to_add_list)
+pets_to_add =  tuple(pets_to_add_list[1:])	# do not want to include the top row which contain the bad fieldnames
+print pets_to_add
 
-
-
-cur.executemany("""INSERT INTO pet(Name, age,
- breed name, species name, shelter name, adopted) VALUES (%s,
- 	%s, %s, %s, %s, %s)""", pets_to_add_list)
+cur.executemany("""INSERT INTO pet(name, age, adopted, breed_id, shelter_id) VALUES (%(name)s,
+ 	%(age)s , %(adopted)s, %(breed_id)s, %(shelter_id)s""", pets_to_add)
 
 
 # inserts a new row in the pet table for each dict entry
