@@ -33,9 +33,9 @@ field_names = ['name', 'age', 'breed', 'species', 'shelter', 'adopted']
 pets_list = []
 with open("pets_to_add.csv") as pet_file:
 #csv_reader = csv.DictReader(pet_file, delimiter = ',')
-	csv_reader = csv.DictReader(pet_file, delimiter = ',', fieldnames = field_names)
-	next(csv_reader)	# skip header row
-	for row in csv_reader:
+	reader = csv.DictReader(pet_file, delimiter = ',', fieldnames = field_names)
+	next(reader)	# skip header row
+	for row in reader:  # each row is a dictionary
 		# row = row.strip()
 		pets_list.append(row)
 
@@ -45,12 +45,14 @@ with open("pets_to_add.csv") as pet_file:
 
 print pets_list
 
-# change blanks to none
+# Format the values in each dictionary to match SQL  file specififications
 pets_to_add_list = []
 for lib in pets_list:
-	l = {k:lib[k]  if lib [k] != ""  else None for k in lib}
+	strip = {k: lib[k].strip() for k in lib}  # get rid of leading spaces
+	capt = {k:strip[k].title()  if k != "shelter" else strip[k] for k in strip}  # normalize capitilization
+	l = {k:capt[k]  if capt[k] != ""  else None for k in capt}
 	pets_to_add_list.append(l)
-#print pets_to_add_list
+print pets_to_add_list
 
 
 # Create tuple of all data to be added
@@ -62,6 +64,15 @@ pets_to_add =  tuple(pets_to_add_list[0:])
 
 # tests for single entries
 #print pets_to_add[2]
+cur.execute("""INSERT INTO pet(name, age, adopted, breed_id) VALUES (%(name)s,
+	%(age)s , %(adopted)s, (SELECT id from breed WHERE name = %(breed)s ))""", pets_to_add[1])
+
+# check updates
+cur.execute('''select * from pet''')
+rows = cur.fetchall()
+for row in rows:
+	print "   ", row
+
 #cur.execute("""INSERT INTO pet(name, age, adopted) VALUES (%(name)s,
  	#%(age)s , %(adopted)s)""", pets_to_add[4])
 #cur.execute("""INSERT INTO breed(name, species_id) VALUES(%(breed)s,
@@ -74,8 +85,6 @@ cur.executemany("""INSERT INTO shelter(name) VALUES (%(shelter)s)""", pets_to_ad
 # add breed to breed table.  Get species id from species table
 cur.executemany("""INSERT INTO breed(name, species_id) VALUES (%(breed)s,
 	(SELECT id FROM species WHERE name = %(species)s) )""", pets_to_add)
-
-
 
 # add Pets to pet table.  Get breed ids from breed table
 cur.executemany("""INSERT INTO pet(name, age, adopted, breed_id) VALUES (%(name)s,
