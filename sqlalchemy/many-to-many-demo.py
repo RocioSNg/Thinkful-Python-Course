@@ -67,22 +67,22 @@ class Breed(Base):
 #   Add your code for BreedTraits object here			#
 #########################################################
 
-# # many-to-many association table between breed and breedtrait
-# breed_breedtrait_table = Table('breed_breedtrait', Base.metadata,
-#     Column('breed_id', Integer, ForeignKey('breed.id'), nullable=False),
-#     Column('breedtrait_id', Integer, ForeignKey('breedtrait.id'), 
-#         nullable=False) )
+# many-to-many association table between breed and breedtrait
+breed_breedtrait_table = Table('breed_breedtrait', Base.metadata,
+    Column('breed_id', Integer, ForeignKey('breed.id'), nullable=False),
+    Column('breedtrait_id', Integer, ForeignKey('breedtrait.id'), 
+        nullable=False) )
 
-# class BreedTrait(Base):
-#     """
-#     domain model class for breed traits that has a many-to-many
-#     relationship with breed
-#     """
-#     __tablename__ = 'breedtrait'
-#     id = Column(id, primary_key=True)
-#     name = Column(string, nullable=False)
-#     breed = relationship("Breed", secondary=breed_breedtrait_table,
-#         backref="breedtrait")
+class BreedTrait(Base):
+    """
+    domain model class for breed traits that has a many-to-many
+    relationship with breed
+    """
+    __tablename__ = 'breedtrait'
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    breed = relationship("Breed", secondary=breed_breedtrait_table,
+        backref="breedtrait")
 
 
 
