@@ -247,6 +247,23 @@ if __name__ == "__main__":
     # Add your code that adds breed traits and links breeds with traits
     # here.
 
+    log.info("Creating new breed traits")
+    spotted = BreedTrait(name = "spotted")
+    friendly = BreedTrait(name = "friendly")
+    large = BreedTrait(name = "large")
+
+    log.info("Adding breed traits to session and committing changes to DB")
+    db_session.add_all([spotted, friendly, large])
+    db_session.commit()
+
+    log.info("Add breed traits to breeds")
+
+
+    # Query the database
+    breeds = db_session.query(Breed).all()
+    for breed in breeds:
+        print "Id: {}, Name: {}".format(breed.id, breed.name)
+
     #################################################
     
     db_session.close()
