@@ -64,8 +64,9 @@ pets_to_add =  tuple(pets_to_add_list[0:])
 
 # tests for single entries
 #print pets_to_add[2]
-cur.execute("""INSERT INTO pet(name, age, adopted, breed_id) VALUES (%(name)s,
-	%(age)s , %(adopted)s, (SELECT id from breed WHERE name = %(breed)s ))""", pets_to_add[1])
+cur.executemany("""INSERT INTO pet(name, age, adopted, breed_id) VALUES (%(name)s,
+	%(age)s , %(adopted)s, (SELECT breed.id from breed, 
+		species WHERE breed.name = %(breed)s AND species.name = %(species)s AND breed.species_id = species.id  ))""", pets_to_add)
 
 # check updates
 cur.execute('''select * from pet''')
@@ -78,13 +79,25 @@ for row in rows:
 #cur.execute("""INSERT INTO breed(name, species_id) VALUES(%(breed)s,
 #	(SELECT id FROM species WHERE name = %(species)s) )""", pets_to_add[0])
 
+# add Pets to pet table.  Get breed ids from breed table
+#cur.executemany("""INSERT INTO pet(name, age, adopted, breed_id) VALUES (%(name)s,
+#	%(age)s , %(adopted)s, (SELECT id from breed WHERE name = %(breed)s ))""", pets_to_add)
 
-# add shelters
-cur.executemany("""INSERT INTO shelter(name) VALUES (%(shelter)s)""", pets_to_add)
+# check updates
+cur.execute('''select * from pet''')
+rows = cur.fetchall()
+for row in rows:
+	print "   ", row
 
 # add breed to breed table.  Get species id from species table
 cur.executemany("""INSERT INTO breed(name, species_id) VALUES (%(breed)s,
 	(SELECT id FROM species WHERE name = %(species)s) )""", pets_to_add)
+
+
+# add shelters
+cur.executemany("""INSERT INTO shelter(name) VALUES (%(shelter)s)""", pets_to_add)
+
+
 
 # add Pets to pet table.  Get breed ids from breed table
 cur.executemany("""INSERT INTO pet(name, age, adopted, breed_id) VALUES (%(name)s,
