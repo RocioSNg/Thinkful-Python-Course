@@ -5,6 +5,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Table
+from sqlalchemy import UniqueConstraint
 
 import logging
 log = logging.getLogger(__name__)
@@ -82,8 +83,9 @@ class BreedTrait(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     breed = relationship("Breed", secondary=breed_breedtrait_table,
-        backref="breedtrait")
-
+        backref="traits")
+    def __repr__(self):
+        return "Trait: {}".format(self.name)
 
 
 class Shelter(Base):
@@ -124,6 +126,17 @@ class Pet(Base):
     def __repr__(self):
         return "Pet:{}".format(self.name) 
 
+            # read ony propry that gets all the pets persons
+
+    # @property
+    # def persons(self):
+    #     return [assoc.person for assoc in self.person_assoc]
+      
+    # #  method that returns all the pet's nickems
+    # def nick_name(self, persons):
+    #     for assoc in self.person_asoc
+
+
 class Person(Base):
     __tablename__ = 'person'
     id = Column(Integer, primary_key=True)
@@ -160,6 +173,35 @@ class Person(Base):
 
     def __repr__(self):
         return "Person: {} {}".format(self.first_name, self.last_name) 
+
+
+# Create association object between Person and pets
+class PetPersonAssociation(Base):
+    __tablename__ = 'pet_person_association'
+
+    # ensure combo of pets and persons are unique
+    __table_args__ = (UniqueConstraint('pet_id', 'person_id', 
+        name='person_pet_uniqueness_constraint'),)
+
+    id = Column(Integer, primary_key=True)
+
+    pet_id = Column(Integer, ForeignKey("pet.id"), 
+        nullable=False)
+    person_id = Column(Integer, ForeignKey("person.id"), 
+        nullable=False)
+
+    # Relationship variables
+    years = Column(Integer)
+    nickname = Column(String)
+
+    person = relationship("Person", backref=backref("pet_associations"))
+    #####  why is backref used twice here????
+    pet = relationship("Pet", backref=backref("person_associations"))
+
+    def __repr__(self):
+        return "PetPersonAssociation( {}: {} )".format(
+            self.pet.name, self.person.full_name)
+
 
 
 ################################################################################
@@ -224,6 +266,7 @@ if __name__ == "__main__":
     # happen if we created Dog on the fly again when instantiating Goldie
     dog = spot.breed.species
 
+
     log.info("Creating pet object for Goldie, who is a Golden Retriever dog")
     goldie = Pet(name="Goldie",
                 age=9,
@@ -237,8 +280,11 @@ if __name__ == "__main__":
     db_session.commit()
 
     assert tom in spot.people
-    spot.people.remove(tom)
-    assert spot not in tom.pets
+    #spot.people.remove(tom)
+    #assert spot not in tom.pets
+
+    tom.pet_associations.append(PetPersonAssociation(pet = spot, years = 5))
+    assert spot in [pet for pet in tom.pet_associations]
 
     #################################################
     #  Now it's up to you to complete this script ! #
@@ -247,22 +293,29 @@ if __name__ == "__main__":
     # Add your code that adds breed traits and links breeds with traits
     # here.
 
-    log.info("Creating new breed traits")
-    spotted = BreedTrait(name = "spotted")
-    friendly = BreedTrait(name = "friendly")
-    large = BreedTrait(name = "large")
+    # create variables that map to the breeds created above
+    dalmation = spot.breed
+    golden = goldie.breed
+
+    log.info("Creating new breed traits wiht associated breeds")
+    spotted = BreedTrait(name = "spotted", breed = [dalmation]) # always use a list
+    friendly = BreedTrait(name = "friendly", breed = [golden])
+    large = BreedTrait(name = "large", breed = [dalmation,golden])
 
     log.info("Adding breed traits to session and committing changes to DB")
     db_session.add_all([spotted, friendly, large])
     db_session.commit()
-
-    log.info("Add breed traits to breeds")
+   
 
 
     # Query the database
     breeds = db_session.query(Breed).all()
     for breed in breeds:
         print "Id: {}, Name: {}".format(breed.id, breed.name)
+
+    breed_traits = db_session.query(BreedTrait).all()
+    for trait in breed_traits:
+        print "Breed: {}, Name: {}".format(trait.breed, trait.name)
 
     #################################################
     
